@@ -90,6 +90,13 @@ app.webhooks.on("issues.opened", async ({ octokit, payload }) => {
   }
 });
 
+app.webhooks.on("push", async ({ payload }) => {
+  // Pull out the branch and repo name from the payload
+  const branch = payload.ref.split("/").pop();
+  const repo = payload.repository.name;
+  console.log(`Received a push event on ${branch} branch of ${repo}`);
+});
+
 // Optional: Handle errors
 app.webhooks.onError((error) => {
   if (error.name === "AggregateError") {
