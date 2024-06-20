@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "server": "node app.js",
-    "lint": "standard"
+    "lint": "standard",
+    "start": "node app.js"
   },
   "devDependencies": {
     "smee-client": "^2.0.1",
