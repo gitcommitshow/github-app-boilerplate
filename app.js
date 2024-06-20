@@ -9,6 +9,9 @@ dotenv.config();
 
 // Set configured values
 const appId = process.env.APP_ID;
+// To add GitHub App Private Key directly as a string config (instead of file), convert it to base64 by running following command
+// openssl base64 -in /path/to/original-private-key.pem -out ./base64EncodedKey.txt -A
+// Then set GITHUB_APP_PRIVATE_KEY_BASE64 environment variable with the value of ./base64EncodedKey.txt content
 const GITHUB_APP_PRIVATE_KEY = process.env.GITHUB_APP_PRIVATE_KEY_BASE64
   ? Buffer.from(process.env.GITHUB_APP_PRIVATE_KEY_BASE64, "base64").toString(
       "utf8",
