@@ -1,5 +1,6 @@
 import fs from "fs";
 import { storage } from "./storage.js";
+import { queryStringToJson } from "./helpers.js";
 
 export const routes = {
   home(req, res) {
@@ -58,11 +59,3 @@ export const routes = {
     return res.end();
   },
 };
-
-function queryStringToJson(rawData) {
-  return rawData.split("&").reduce((result, item) => {
-    const parts = item.split("=");
-    result[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
-    return result;
-  }, {});
-}
