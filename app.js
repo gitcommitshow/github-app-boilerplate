@@ -3,6 +3,7 @@ import fs from "fs";
 import http from "http";
 import { Octokit, App } from "octokit";
 import { createNodeMiddleware } from "@octokit/webhooks";
+import { routes } from "./routes.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -115,7 +116,29 @@ const localWebhookUrl = `http://localhost:${port}${path}`;
 // See https://github.com/octokit/webhooks.js/#createnodemiddleware for all options
 const middleware = createNodeMiddleware(app.webhooks, { path });
 
-http.createServer(middleware).listen(port, () => {
-  console.log(`Server is listening for events at: ${localWebhookUrl}`);
-  console.log("Press Ctrl + C to quit.");
-});
+http
+  .createServer((req, res) => {
+    switch (req.method + " " + req.url) {
+      case "GET /":
+        routes.home(req, res);
+        break;
+      case "GET /form":
+        routes.form(req, res);
+        break;
+      case "POST /form":
+        routes.submitForm(req, res);
+        break;
+      case "POST /api/webhook":
+        middleware(req, res);
+        break;
+      default:
+        routes.default(req, res);
+    }
+  })
+  .listen(port, () => {
+    console.log(`Server is listening for events at: ${localWebhookUrl}`);
+    console.log(
+      "Server is also serving the homepage at: http://localhost:" + port,
+    );
+    console.log("Press Ctrl + C to quit.");
+  });
